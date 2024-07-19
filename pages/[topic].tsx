@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { prisma } from '../../prisma';
+import { prisma } from '../lib/prisma';
 
 const TopicPage = ({ notes, topic }) => {
   return (

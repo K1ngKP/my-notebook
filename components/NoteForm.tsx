@@ -1,60 +1,44 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState } from 'react';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Button } from "@/components/ui/button"
-
-
-
-
-interface FormData {
-  title: string;
-  content: string;
-}
 
 interface NoteFormProps {
-  onSubmit: SubmitHandler<FormData>;
-  defaultValues?: FormData;
+  initialData?: {
+    title: string;
+    content: string;
+  };
+  onSubmit: (data: { title: string; content: string }) => void;
 }
 
-const NoteForm: React.FC<NoteFormProps> = ({ onSubmit, defaultValues }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
-    defaultValues,
-  });
-  const [submitError, setSubmitError] = useState<string | null>(null);
+const NoteForm = ({ initialData = { title: '', content: '' }, onSubmit }: NoteFormProps) => {
+  const [title, setTitle] = useState(initialData.title);
+  const [content, setContent] = useState(initialData.content);
 
-  const handleFormSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      await onSubmit(data);
-      setSubmitError(null);
-    } catch (error) {
-      setSubmitError('Failed to save the note. Please try again.');
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit({ title, content });
   };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-      {submitError && <Alert variant="default">{submitError}</Alert>}
+    <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
-        <Input
-          id="title"
-          {...register('title', { required: 'Title is required' })}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+        <label>Title</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="border p-2 w-full"
         />
-        {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
       </div>
       <div>
-        <label htmlFor="content" className="block text-sm font-medium text-gray-700">Content</label>
-        <Textarea
-          id="content"
-          {...register('content', { required: 'Content is required' })}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+        <label>Content</label>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className="border p-2 w-full"
         />
-        {errors.content && <span className="text-red-500 text-sm">{errors.content.message}</span>}
       </div>
-      <Button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">Save</Button>
+      <button type="submit" className="bg-blue-600 text-white p-2 mt-4">
+        Save
+      </button>
     </form>
   );
 };

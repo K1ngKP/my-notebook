@@ -1,26 +1,12 @@
-import { FC, ReactNode } from 'react';
-import Link from 'next/link';
+import { ReactNode } from 'react';
 
-const Layout: FC<{ children: ReactNode }> = ({ children }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-gray-100">
       <header className="bg-blue-600 text-white p-4">
-        <nav className="container mx-auto flex justify-between">
-          <div>
-            <Link href="/">Home</Link>
-          </div>
-          <div className="space-x-4">
-            <Link href="/mysql">MySQL</Link>
-            <Link href="/oop">OOP</Link>
-            <Link href="/system-design">System Design</Link>
-            <Link href="/operating-systems">Operating Systems</Link>
-            <Link href="/networking">Networking</Link>
-            <Link href="/api-protocols">API Protocols</Link>
-            <Link href="/dsa-patterns">DSA Patterns</Link>
-          </div>
-        </nav>
+        <h1 className="text-2xl">Notes App</h1>
       </header>
-      <main className="flex-grow container mx-auto p-4">{children}</main>
+      <main className="p-4">{children}</main>
     </div>
   );
 };

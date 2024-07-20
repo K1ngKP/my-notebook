@@ -1,14 +1,24 @@
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { SubmitHandler } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import Layout from '../../../components/Layout';
 import NoteForm from '../../../components/NoteForm';
-import { prisma } from '../../../lib/prisma';
 
-const EditNotePage = ({ note }) => {
+const EditNote = () => {
   const router = useRouter();
+  const { id } = router.query;
+  const [note, setNote] = useState(null);
 
-  const handleEditNote: SubmitHandler<FormData> = async (data) => {
-    await fetch(`/api/notes/${note.id}`, {
+  useEffect(() => {
+    const fetchNote = async () => {
+      const res = await fetch(`/api/notes/${id}`);
+      const data = await res.json();
+      setNote(data);
+    };
+    if (id) fetchNote();
+  }, [id]);
+
+  const handleSubmit = async (data: { title: string; content: string }) => {
+    await fetch(`/api/notes/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -18,24 +28,14 @@ const EditNotePage = ({ note }) => {
     router.push('/');
   };
 
+  if (!note) return <div>Loading...</div>;
+
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Edit Note</h1>
-      <NoteForm onSubmit={handleEditNote} defaultValues={note} />
-    </div>
+    <Layout>
+      <h1 className="text-2xl mb-4">Edit Note</h1>
+      <NoteForm initialData={note} onSubmit={handleSubmit} />
+    </Layout>
   );
 };
 
-export default EditNotePage;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.params;
-  const note = await prisma.note.findUnique({
-    where: { id: Number(id) },
-  });
-  return {
-    props: {
-      note,
-    },
-  };
-};
+export default EditNote;

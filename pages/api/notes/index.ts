@@ -1,14 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../lib/prisma';
+import prisma from '../../../lib/prisma';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const { title, content, topic } = req.body;
-    const note = await prisma.note.create({
-      data: { title, content, topic },
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method === 'GET') {
+    const notes = await prisma.note.findMany();
+    res.json(notes);
+  } else if (req.method === 'POST') {
+    const { title, content } = req.body;
+    const newNote = await prisma.note.create({
+      data: { title, content },
     });
-    res.status(201).json(note);
+    res.json(newNote);
   } else {
-    res.status(405).end(); // Method Not Allowed
+    res.status(405).end();
   }
-}
+};

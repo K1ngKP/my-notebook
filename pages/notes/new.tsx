@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import NoteForm from '../../components/NoteForm';
+import { Button} from '@/components/ui/button';
 
 const NewNote = () => {
   const router = useRouter();
@@ -18,6 +19,7 @@ const NewNote = () => {
 
   return (
     <Layout>
+      
       <h1 className="text-2xl mb-4">Create New Note</h1>
       <NoteForm onSubmit={handleSubmit} />
     </Layout>

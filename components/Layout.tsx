@@ -1,14 +1,24 @@
 import { ReactNode } from 'react';
-
+import { ThemeProvider } from "@/components/theme-provider"
+import { ModeToggle } from './modetoggle';
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-blue-600 text-white p-4">
-        <h1 className="text-2xl">Notes App</h1>
-      </header>
-      <main className="p-4">{children}</main>
-    </div>
-  );
+    <>
+      
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="relative">
+              <ModeToggle />
+            </div>
+            {children}
+          </ThemeProvider>
+        
+    </>
+  )
 };
 
 export default Layout;

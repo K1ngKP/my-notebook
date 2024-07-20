@@ -17,7 +17,8 @@ const Home = ({ notes }) => {
     <Layout>
       <h1 className="text-2xl mb-4">Notes</h1>
       <Link href="/notes/new" legacyBehavior>
-        <a className="bg-blue-600 text-white p-2">Create New Note</a>
+      <Button><a className="p-2">Create New Note</a></Button>
+        
       </Link>
       <ul className="mt-4">
         {notes.map((note) => (
@@ -25,12 +26,11 @@ const Home = ({ notes }) => {
             <Link href={`/notes/${note.id}/edit`} legacyBehavior>
               <a className="text-blue-600">{note.title}</a>
             </Link>
-            <Button
-              onClick={() => handleDelete(note.id)}
-              className="bg-red-600 text-white p-2 ml-4"
-            >
-              Delete
-            </Button>
+            
+            <Button onClick={() => handleDelete(note.id)}>
+              Delete</Button>
+            
+            
           </li>
         ))}
       </ul>

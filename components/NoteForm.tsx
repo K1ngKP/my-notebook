@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { Textarea } from './ui/textarea';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 interface NoteFormProps {
   initialData?: {
@@ -18,27 +21,25 @@ const NoteForm = ({ initialData = { title: '', content: '' }, onSubmit }: NoteFo
   };
 
   return (
+    
     <form onSubmit={handleSubmit}>
       <div>
         <label>Title</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="border p-2 w-full"
-        />
+        <Input type='text' value={title}
+          onChange={(e) => setTitle(e.target.value)}></Input>
+        
       </div>
       <div>
         <label>Content</label>
-        <textarea
-          value={content}
+        
+        <Textarea value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="border p-2 w-full"
-        />
+          className="border p-2 ">
+
+        </Textarea>
       </div>
-      <button type="submit" className="bg-blue-600 text-white p-2 mt-4">
-        Save
-      </button>
+      <Button type='submit' className="border p-4">Save</Button>
+      
     </form>
   );
 };
